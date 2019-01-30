@@ -25,9 +25,10 @@ func TeamsListener(resp http.ResponseWriter, req *http.Request) {
 		//resp.Write([]byte("Invalid Authentication"))
 		respStatus = http.StatusForbidden
 		respData = []byte("Invalid Authentication")
+
+		ResponseWithJSON(resp, respData, respStatus)
 	}
 
-	//reqBody, err := ioutil.ReadAll(req.Body)
 	fmt.Printf("reqBody: %v \n", string(reqBody))
 	/*if err != nil {
 		//resp.WriteHeader(http.StatusInternalServerError)
@@ -59,7 +60,7 @@ teamsRequest: {message 1548765074233 2019-01-29T12:31:14.236Z 2019-01-29T13:31:1
 	// TODO: process requests by following bot-comm dialect
 
 	// TODO: respond according to processed request
-	teamsResponse := BuildTeamsResponse("Echo: " + teamsRequest.Text)
+	teamsResponse := BuildTeamsResponse(teamsRequest, "all")
 	err = SaveTeamResponse(teamsResponse)
 	if err != nil {
 		log.Fatal(err)
@@ -85,7 +86,7 @@ func isRequestAuthenticated(lreq *http.Request) (isAuth bool, reqBody []byte) {
 
 	reqBody, _ = ioutil.ReadAll(lreq.Body)
 	authHeader := lreq.Header.Get("authorization")
-	fmt.Printf("authHeader: %v \n", authHeader)
+	//fmt.Printf("authHeader: %v \n", authHeader)
 	messageMAC, _ := base64.StdEncoding.DecodeString(strings.TrimPrefix(authHeader, "HMAC "))
 
 	mac := hmac.New(sha256.New, teamsSecretBytes)

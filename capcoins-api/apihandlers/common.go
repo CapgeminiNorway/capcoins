@@ -28,19 +28,20 @@ type WebHook interface {
 type TeamsRequest struct {
 	CreatedAt string  `json:",omitempty"`
 
-	Type           string `json:"type,omitempty"`
-	ID             string `json:"id,omitempty"`
-	Timestamp      string `json:"timestamp,omitempty"`
-	LocalTimestamp string `json:"localTimestamp,omitempty"`
-	ServiceURL     string `json:"serviceUrl,omitempty"`
-	ChannelID      string `json:"channelId,omitempty"`
-	FromUser       User   `json:"from,omitempty"`
+	Type           string    `json:"type,omitempty"`
+	ID             string    `json:"id,omitempty"`
+	Timestamp      string    `json:"timestamp,omitempty"`
+	LocalTimestamp string    `json:"localTimestamp,omitempty"`
+	ServiceURL     string    `json:"serviceUrl,omitempty"`
+	ChannelID      string    `json:"channelId,omitempty"`
+	FromUser       TeamsUser `json:"from,omitempty"`
 	Conversation   struct {
-		ID string `json:"id"`
+		ID string `json:"id,omitempty"`
+		Name string `json:"name,omitempty"`
 	} `json:"conversation"`
-	RecipientUser User   `json:"recipient,omitempty"`
-	TextFormat    string `json:"textFormat,omitempty"`
-	Text          string `json:"text,omitempty"`
+	RecipientUser TeamsUser `json:"recipient,omitempty"`
+	TextFormat    string    `json:"textFormat,omitempty"`
+	Text          string    `json:"text,omitempty"`
 	Attachments   []struct {
 		ContentType string `json:"contentType,omitempty"`
 		Content     string `json:"Content,omitempty"`
@@ -56,19 +57,28 @@ type TeamsRequest struct {
 type TeamsResponse struct {
 	CreatedAt string  `json:",omitempty"`
 
-	Type string `json:"type"`
-	Text string `json:"text"`
+	Type          string    `json:"type"`
+	Text          string    `json:"text"`
+	ReplyToId     string    `json:"replyToId,omitempty"`
+	FromUser      TeamsUser `json:"from,omitempty"`
+	RecipientUser TeamsUser `json:"recipient,omitempty"`
 }
 // BuildTeamsResponse is a helper method to build a TeamsResponse
-func BuildTeamsResponse(text string) TeamsResponse {
-	return TeamsResponse{
-		Type: "message",
-		Text: text,
+func BuildTeamsResponse(teamsRequest TeamsRequest, fields ...string) (teamsResponse TeamsResponse) {
+	teamsResponse = TeamsResponse{}
+	teamsResponse.Type = "message"
+	teamsResponse.Text = teamsRequest.Text
+
+	if fields != nil {
+		teamsResponse.RecipientUser = teamsRequest.FromUser
+		teamsResponse.ReplyToId = teamsRequest.ID
 	}
+
+	return
 }
 
-// User represents data for a Microsoft Teams user.
-type User struct {
+// TeamsUser represents data for a Microsoft Teams user.
+type TeamsUser struct {
 	ID   string `json:"id"`
 	Name string `json:"name"`
 }

@@ -3,30 +3,38 @@
     {
       "title":"Help",
       "description":"Displays this help message",
+      "how": ["@CapCoin help _>> get some help_"],
       "keywords": ["help", "hjelp", "hjelpe", "sos"],
       "response": "TODO"
     },
     {
       "title":"Greeting",
       "description":"Respond to greeting",
+      "how": ["@CapCoin hei _>> just a greeting_"],
       "keywords": ["hello", "hei", "hej", "hi"],
       "response": "TODO"
     },
     {
       "title": "Reward",
       "description": "Reward CapCoins to a colleague",
+      "how": [
+        "@CapCoin @username ++ Takk you Rock! (penguin) _>> +1 capcoin_",
+        "@CapCoin @username -- Gimme back my coin... (eyeroll) _>> -1 capcoin_"
+      ],
       "keywords": ["++", "+1", "coin", "coins", "capcoin", "capcoins"],
       "response": "TODO"
     },
     {
       "title": "Leaderboard",
       "description": "Display leaderboard",
+      "how": ["@CapCoin top -- see leaderboard"],
       "keywords": ["top", "topp","toplist", "leaderboard"],
       "response": "TODO"
     },
     {
       "title": "Me",
       "description": "Display my CapCoins",
+      "how": ["@CapCoin top _>> see my current coins_"],
       "keywords": ["me", "meg", "mycoins", "mycap"],
       "response": "TODO"
     }
