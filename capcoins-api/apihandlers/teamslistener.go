@@ -7,17 +7,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"os"
 	"strings"
 )
-
-/*
-var auth bool
-var keyBytes []byte
-//var webhook WebHook
-var teamsSecret string
-*/
 
 func TeamsListener(resp http.ResponseWriter, req *http.Request) {
 
@@ -41,20 +35,23 @@ func TeamsListener(resp http.ResponseWriter, req *http.Request) {
 		respData = []byte("")
 	} */
 
-	var treq= TeamsRequest{}
-	err := json.Unmarshal(reqBody, &treq)
-	//err := json.NewDecoder(strings.NewReader(string(reqBody))).Decode(&treq)
+	var teamsRequest = TeamsRequest{}
+	err := json.Unmarshal(reqBody, &teamsRequest)
+	//err := json.NewDecoder(strings.NewReader(string(reqBody))).Decode(&teamsRequest)
 	if err != nil {
 		//resp.WriteHeader(http.StatusBadRequest)
 		//resp.Write([]byte(err.Error()))
 		respStatus = http.StatusBadRequest
 		respData = []byte(err.Error())
 	}
-	fmt.Printf("treq: %v \n", treq)
-	fmt.Printf("treq.text: %v \n", treq.Text)
-	err = SaveTeamsRequest(treq)
+	//fmt.Printf("teamsRequest: %v \n", teamsRequest)
+	fmt.Printf("teamsRequest.text: %v \n", teamsRequest.Text)
+	err = SaveTeamsRequest(teamsRequest)
+	if err != nil {
+		log.Fatal(err)
+	}
 	/*
-treq: {message 1548765074233 2019-01-29T12:31:14.236Z 2019-01-29T13:31:14.236+01:00 https://smba.trafficmanager.net/emea/ msteams {29:14_tQdN2ZuAfTS1EheqkJ_v2sCNUNijEZuG7yw3rTvA9Tk3Jra3WybOctP0s3i_kGvO2vAoIGwzctN4slngHmMQ Guleryuz, Yilmaz} {19:a694a70b0a7f4bfd9572b2d912c5d160@thread.skype;messageid=1548765074233} { } plain <at>CapCoins</at> goooo
+teamsRequest: {message 1548765074233 2019-01-29T12:31:14.236Z 2019-01-29T13:31:14.236+01:00 https://smba.trafficmanager.net/emea/ msteams {29:14_tQdN2ZuAfTS1EheqkJ_v2sCNUNijEZuG7yw3rTvA9Tk3Jra3WybOctP0s3i_kGvO2vAoIGwzctN4slngHmMQ Guleryuz, Yilmaz} {19:a694a70b0a7f4bfd9572b2d912c5d160@thread.skype;messageid=1548765074233} { } plain <at>CapCoins</at> goooo
 [{text/html <div><div><span itemscope="" itemtype="http://schema.skype.com/Mention" itemid="0">CapCoins</span> goooo</div>
 </div>}] [map[type:clientInfo locale:nb-NO country:NO platform:Mac]] {19:a694a70b0a7f4bfd9572b2d912c5d160@thread.skype 19:f49d648a29104431a8b662c4182b8bf2@thread.skype}}
 	*/
@@ -62,35 +59,23 @@ treq: {message 1548765074233 2019-01-29T12:31:14.236Z 2019-01-29T13:31:14.236+01
 	// TODO: process requests by following bot-comm dialect
 
 	// TODO: respond according to processed request
-	tresp := BuildTeamsResponse("Echo: " + treq.Text)
-	respData, err = json.Marshal(tresp)
+	teamsResponse := BuildTeamsResponse("Echo: " + teamsRequest.Text)
+	err = SaveTeamResponse(teamsResponse)
+	if err != nil {
+		log.Fatal(err)
+	}
+	respData, err = json.Marshal(teamsResponse)
 	if err == nil {
 		respStatus = http.StatusOK
 	} else {
 		respStatus = http.StatusInternalServerError
 	}
+	ResponseWithJSON(resp, respData, respStatus)
+	/*
 	fmt.Println(respStatus)
 	fmt.Println(string(respData))
 	resp.Write(respData)
-
-
-	/*
-	tresp, _ := webhook.OnMessage(treq)
-	buf := new(bytes.Buffer)
-	err = json.NewEncoder(buf).Encode(tresp)
-	fmt.Printf("buf: %v \n", string(buf.Bytes()))
-
-	if err == nil {
-		respStatus = http.StatusOK
-		respData = buf.Bytes()
-	}
-	//resp.WriteHeader(http.StatusOK)
-	//resp.Write(buf.Bytes())
-	//resp.Header().Add("", respStatus) //.WriteHeader(respStatus)
 	*/
-
-
-
 }
 
 func isRequestAuthenticated(lreq *http.Request) (isAuth bool, reqBody []byte) {
@@ -101,8 +86,6 @@ func isRequestAuthenticated(lreq *http.Request) (isAuth bool, reqBody []byte) {
 	reqBody, _ = ioutil.ReadAll(lreq.Body)
 	authHeader := lreq.Header.Get("authorization")
 	fmt.Printf("authHeader: %v \n", authHeader)
-	//fmt.Printf("reqBody: %v \n", string(reqBody))
-	//fmt.Printf("keyBytes: %v \n", string(keyBytes))
 	messageMAC, _ := base64.StdEncoding.DecodeString(strings.TrimPrefix(authHeader, "HMAC "))
 
 	mac := hmac.New(sha256.New, teamsSecretBytes)

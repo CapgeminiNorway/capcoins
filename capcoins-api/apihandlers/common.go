@@ -17,13 +17,17 @@ func ResponseWithJSON(w http.ResponseWriter, json []byte, code int) {
 	w.Write(json)
 }
 
+/*
 // WebHook represents the interface needed to handle Microsoft Teams WebHook Requests.
 type WebHook interface {
 	OnMessage(TeamsRequest) (TeamsResponse, error)
 }
+*/
 
 // TeamsRequest data representing an inbound WebHook request from Microsoft Teams.
 type TeamsRequest struct {
+	CreatedAt string  `json:",omitempty"`
+
 	Type           string `json:"type,omitempty"`
 	ID             string `json:"id,omitempty"`
 	Timestamp      string `json:"timestamp,omitempty"`
@@ -50,6 +54,8 @@ type TeamsRequest struct {
 
 // TeamsResponse represents the data to return to Microsoft Teams.
 type TeamsResponse struct {
+	CreatedAt string  `json:",omitempty"`
+
 	Type string `json:"type"`
 	Text string `json:"text"`
 }

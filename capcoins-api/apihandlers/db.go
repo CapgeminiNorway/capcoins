@@ -2,9 +2,11 @@ package apihandlers
 
 import (
 	"fmt"
+	"github.com/vjeantet/jodaTime"
 	"gopkg.in/mgo.v2"
 	"log"
 	"os"
+	"time"
 )
 
 var dbName = "capcoins"
@@ -30,10 +32,30 @@ func SaveTeamsRequest(teamsReq TeamsRequest) (err error) {
 		teamsReq._id = teamsReq.ID
 		teamsReq.ID = ""
 	}*/
+	if len(teamsReq.CreatedAt) == 0 {
+		teamsReq.CreatedAt = jodaTime.Format("YYYY-MM-ddTHH:mm:ss", time.Now())
+	}
 
-	collectionName = "requests"
+	collectionName = "teams_request"
 	collection := dbSession.DB(dbName).C(collectionName)
 	err = collection.Insert(teamsReq)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return
+}
+func SaveTeamResponse(teamResp TeamsResponse) (err error) {
+	// init DB connection
+	dbSession := DbConnect()
+	defer dbSession.Close()
+
+	if len(teamResp.CreatedAt) == 0 {
+		teamResp.CreatedAt = jodaTime.Format("YYYY-MM-ddTHH:mm:ss", time.Now())
+	}
+
+	collectionName = "teams_response"
+	collection := dbSession.DB(dbName).C(collectionName)
+	err = collection.Insert(teamResp)
 	if err != nil {
 		log.Fatal(err)
 	}
