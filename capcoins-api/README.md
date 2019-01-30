@@ -1,7 +1,7 @@
  CapCoins-API crafted with Golang  
 ==================================  
 
-Golang app using KEYCLOAK!    
+CapCoins API server.     
 
 ### Prerequisites
 
