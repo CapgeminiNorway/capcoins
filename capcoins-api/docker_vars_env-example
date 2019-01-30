@@ -1,0 +1,6 @@
+# mongodb instance to connect
+MONGODB_URL=mongodb://mongo-local:27017/baet
+
+# see https://docs.microsoft.com/en-us/microsoftteams/platform/concepts/outgoingwebhook
+TEAMS_SECRET=FIXME_add-value-from-ms-teams
+

@@ -1,0 +1,43 @@
+version: '3'
+
+networks:
+  capcoins-network:
+    driver: bridge
+
+services:
+
+  ## my APP
+  capcoins-api-golang:
+    build: .
+    image: zeusbaba/capcoins-api:1.0.0
+    ports:
+      - "8088:8088"
+    env_file:
+      - docker_vars.env
+    environment:
+      # override ...URL for using local instance
+      - MONGODB_URL=mongodb://mongo-local:27017/capcoins
+      # about WAIT_... see https://github.com/ufoscout/docker-compose-wait
+      #- WAIT_HOSTS=mongo-local:27017
+      #- WAIT_BEFORE_HOSTS=4
+    networks:
+      - capcoins-network
+    links:
+      - mongo-local
+    depends_on:
+      - mongo-local
+
+  ## mongodb
+  mongo-local:
+    image: 'bitnami/mongodb:3.6'
+    ports:
+      - "27017:27017"
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+      - MONGODB_DATABASE=capcoins
+      - MONGODB_USERNAME=dummy
+      - MONGODB_PASSWORD=password123
+    networks:
+      - capcoins-network
+    volumes:
+      - ./docker-data-mongodb:/bitnami

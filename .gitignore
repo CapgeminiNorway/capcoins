@@ -1,0 +1,30 @@
+.*
+!.gitignore
+
+*.csv
+*.env
+
+# Binaries for programs and plugins
+capcoins-api_*
+docker-data*
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binary, build with `go test -c`
+*.test
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+*.out
+
+### IntelliJ IDEA ###
+*.iws
+*.iml
+*.ipr
+/out/
+/build/
+*.stackdump
+
+

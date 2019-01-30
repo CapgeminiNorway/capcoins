@@ -1,0 +1,34 @@
+{
+  "commands": [
+    {
+      "title":"Help",
+      "description":"Displays this help message",
+      "keywords": ["help", "hjelp", "hjelpe", "sos"],
+      "response": "TODO"
+    },
+    {
+      "title":"Greeting",
+      "description":"Respond to greeting",
+      "keywords": ["hello", "hei", "hej", "hi"],
+      "response": "TODO"
+    },
+    {
+      "title": "Reward",
+      "description": "Reward CapCoins to a colleague",
+      "keywords": ["++", "+1", "coin", "coins", "capcoin", "capcoins"],
+      "response": "TODO"
+    },
+    {
+      "title": "Leaderboard",
+      "description": "Display leaderboard",
+      "keywords": ["top", "topp","toplist", "leaderboard"],
+      "response": "TODO"
+    },
+    {
+      "title": "Me",
+      "description": "Display my CapCoins",
+      "keywords": ["me", "meg", "mycoins", "mycap"],
+      "response": "TODO"
+    }
+  ]
+}

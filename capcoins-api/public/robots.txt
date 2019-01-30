@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /players
+Disallow: /players/*
+Disallow: /users
+Disallow: /users/*
+Allow: /
