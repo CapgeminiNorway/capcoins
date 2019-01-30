@@ -72,7 +72,7 @@ When you run, it should become available via [http://localhost:8088](http://loca
 Building, publishing and running via _Docker_ :       
 ```bash
 # set env vars for ease-of-use
-# NOTE! please just replace 'zeusbaba' with your user  
+# NB! please just replace 'zeusbaba' with your own dockerhub username    
 $ export dockerhubUser=zeusbaba \
   export appName=capcoins-api \
   export appVersion=1.0.0

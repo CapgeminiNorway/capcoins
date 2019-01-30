@@ -6,7 +6,7 @@ echo "making build... linux"
 GOOS=linux GOARCH=amd64 go build capcoins-api.go
 
 echo "prepare env"
-# NB! replace this with your own docker hub username
+# NB! please just replace 'zeusbaba' with your own dockerhub username
 export dockerhubUser=zeusbaba
 export appName=capcoins-api
 export appVersion=1.0.0
