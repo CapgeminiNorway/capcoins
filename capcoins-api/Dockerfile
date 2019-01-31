@@ -5,5 +5,9 @@ LABEL maintainer="Yilmaz Guleryuz 397125+zeusbaba@users.noreply.github.com"
 COPY capcoins-api ./
 RUN chmod +x ./capcoins-api
 
+RUN mkdir -p config
+RUN chmod -R +x config
+COPY config/bot-dialect.json ./config/
+
 EXPOSE 8088
 CMD ./capcoins-api

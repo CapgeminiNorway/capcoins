@@ -32,6 +32,8 @@ func main() {
 		os.Setenv("TEAMS_SECRET", teamsSecret)
 	}
 
+	//apihandlers.LoadBotDialect()
+
 	// init DB connection
 	//dbSession := apihandlers.DbConnect()
 	//defer dbSession.Close()

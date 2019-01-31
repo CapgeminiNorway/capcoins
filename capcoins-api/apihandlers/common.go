@@ -56,6 +56,7 @@ type TeamsRequest struct {
 // TeamsResponse represents the data to return to Microsoft Teams.
 type TeamsResponse struct {
 	CreatedAt string  `json:",omitempty"`
+	//RequestId string  `json:",omitempty"`
 
 	Type          string    `json:"type"`
 	Text          string    `json:"text"`
@@ -69,9 +70,9 @@ func BuildTeamsResponse(teamsRequest TeamsRequest, fields ...string) (teamsRespo
 	teamsResponse.Type = "message"
 	teamsResponse.Text = teamsRequest.Text
 
+	teamsResponse.ReplyToId = teamsRequest.ID
 	if fields != nil {
 		teamsResponse.RecipientUser = teamsRequest.FromUser
-		teamsResponse.ReplyToId = teamsRequest.ID
 	}
 
 	return

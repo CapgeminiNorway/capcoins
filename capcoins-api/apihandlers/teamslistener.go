@@ -58,9 +58,12 @@ teamsRequest: {message 1548765074233 2019-01-29T12:31:14.236Z 2019-01-29T13:31:1
 	*/
 
 	// TODO: process requests by following bot-comm dialect
+	teamsResponse := ProcessTeamsRequest(teamsRequest)
 
 	// TODO: respond according to processed request
-	teamsResponse := BuildTeamsResponse(teamsRequest, "all")
+	if len(teamsResponse.Text) == 0 {
+		teamsResponse = BuildTeamsResponse(teamsRequest, "all")
+	}
 	err = SaveTeamResponse(teamsResponse)
 	if err != nil {
 		log.Fatal(err)
