@@ -22,23 +22,23 @@ type Command struct {
 }
 
 func LoadBotDialect() (commands Commands) {
-	dialectFile := "./config/bot-dialect.json"
-	jsonFile, err := os.Open(dialectFile)
-	defer jsonFile.Close()
+	fileName := "./config/bot-dialect.json"
+	file, err := os.Open(fileName)
+	defer file.Close()
 	if err != nil {
 		fmt.Println(err)
 	} else {
-		fmt.Printf("Successfully opened %v file \n", dialectFile)
+		fmt.Printf("Successfully opened %v file \n", fileName)
 
 		//var commands Commands
-		jsonBlob, _ := ioutil.ReadAll(jsonFile)
-		err = json.Unmarshal(jsonBlob, &commands)
+		fileBlob, _ := ioutil.ReadAll(file)
+		err = json.Unmarshal(fileBlob, &commands)
 		if err != nil {
 			fmt.Println(err)
 		}
 
 		for ind := range commands.Commands {
-		//for i:=0; i<len(commands.Commands); i++ {
+		//for ind:=0; ind<len(commands.Commands); ind++ {
 			commandJson, _ := json.Marshal(commands.Commands[ind])
 			fmt.Printf("command #%d: %v \n", ind, string(commandJson))
 		}
@@ -53,6 +53,7 @@ func ProcessTeamsRequest(teamsRequest TeamsRequest) (teamsResponse TeamsResponse
 		commands = LoadBotDialect()
 	}
 // TODO: implement business logic for responses
+// make use of html templates
 
 	for ind := range commands.Commands {
 		//strings.Contains(commands.Commands[ind].Keywords, teamsRequest.Text)
