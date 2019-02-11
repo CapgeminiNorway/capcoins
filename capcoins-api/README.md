@@ -63,7 +63,7 @@ $ GOOS=darwin GOARCH=amd64 go build capcoins-api.go
 $ GOOS=windows GOARCH=amd64 go build capcoins-api.go  
 
 ```
-see also [make-build.sh](make-build.sh) which builds for all common platforms   
+see also [make-builds.sh](make-builds.sh) which builds for all common platforms   
 When you run, it should become available via [http://localhost:8088](http://localhost:8088)      
   
 
